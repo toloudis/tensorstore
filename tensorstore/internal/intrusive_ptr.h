@@ -357,7 +357,7 @@ class IntrusivePtr {
   }
 
   template <typename U,
-            std::enable_if_t<std::is_convertible_v<
+            std::enable_if_t<!std::is_same_v<U, T> && std::is_convertible_v<
                 typename R::template pointer<U>, pointer>>* = nullptr>
   IntrusivePtr(const IntrusivePtr<U, R>& rhs) noexcept
       : IntrusivePtr(rhs.get(), acquire_object_ref) {}
@@ -380,7 +380,7 @@ class IntrusivePtr {
   }
 
   template <typename U,
-            std::enable_if_t<std::is_convertible_v<
+            std::enable_if_t<!std::is_same_v<U, T> && std::is_convertible_v<
                 typename R::template pointer<U>, pointer>>* = nullptr>
   constexpr IntrusivePtr(IntrusivePtr<U, R>&& rhs) noexcept
       : IntrusivePtr(rhs.release(), adopt_object_ref) {}
